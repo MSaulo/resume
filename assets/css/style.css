@@ -833,6 +833,13 @@ body.mobile-nav-active #mobile-nav-toggle {
     margin: 0 20px;
 }
 
+@media (max-width: 768px) {
+    #team .social i {
+        font-size: 50px;
+        margin: 0 10px;
+    }
+}
+
 /* Contact Section
 --------------------------------*/
 #contact {
