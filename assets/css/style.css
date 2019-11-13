@@ -314,7 +314,9 @@ h1, h2, h3, h4, h5, h6 {
     color: #fff;
     font-family: 'Raleway', sans-serif;
     font-weight: 300;
-    font-size: 14px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
     outline: none;
     transition: 0.35s all;
 }
@@ -346,8 +348,10 @@ h1, h2, h3, h4, h5, h6 {
     background: #f6f6f6;
 }
 
-.nav-menu ul li a {
+.flags li a {
     color: #333;
+    display: flex;
+    align-items: center;
 }
 
 .nav-menu ul ul {
@@ -666,6 +670,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 #portfolio .portfolio-item .details {
     height: 260px;
+    padding: 15px;
     background: #fff;
     display: table-cell;
     vertical-align: middle;
@@ -697,7 +702,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 #portfolio .portfolio-item:hover .details {
-    opacity: 0.8;
+    opacity: 0.95;
 }
 
 #portfolio .portfolio-item:hover .details h4 {
@@ -913,6 +918,6 @@ body.mobile-nav-active #mobile-nav-toggle {
 #footer .credits {
     padding-top: 10px;
     text-align: center;
-    font-size: 13px;
+    font-size: 10px;
     color: #ccc;
 }
