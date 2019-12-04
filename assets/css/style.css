@@ -862,6 +862,7 @@ body.mobile-nav-active #mobile-nav-toggle {
     line-height: 24px;
 }
 #contact .form #sendmessage {
+    margin-bottom: 20px;
     color: #049c00;
     border: 1px solid #049c00;
     display: none;
@@ -872,16 +873,13 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 #contact .form #errormessage {
+    margin-bottom: 20px;
     color: red;
     display: none;
     border: 1px solid red;
     text-align: center;
     padding: 15px;
     font-weight: 600;
-}
-
-#contact .form #sendmessage.show, #contact .form #errormessage.show, #contact .form .show {
-    display: block;
 }
 
 #contact .form .validation {
@@ -907,6 +905,10 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 #contact .form button[type="submit"]:hover {
     background: #3877a0;
+}
+
+#contact .form button[type="submit"]:disabled {
+    cursor: not-allowed;
 }
 
 /*--------------------------------------------------------------

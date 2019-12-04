@@ -1,109 +1,157 @@
 jQuery(document).ready(function($) {
-    "use strict";
+  "use strict";
 
-    //Contact
-    $('form#contact_form').submit(function(){
-        var f = $(this).find('.form-group'),
-            ferror = false,
-            emailExp = /^[^\s()<>@,;:\/]+@\w[\w\.-]+\.[a-z]{2,}$/i;
+  var request;
 
-        f.children('input').each(function(){ // run all inputs
+  //Contact
+  $("form#contact_form").submit(function() {
+    event.preventDefault();
 
-            var i = $(this); // current input
-            var rule = i.attr('data-rule');
+    if (request) request.abort();
 
-            if( rule !== undefined ){
-                var ierror=false; // error flag for current input
-                var pos = rule.indexOf( ':', 0 );
-                if( pos >= 0 ){
-                    var exp = rule.substr( pos+1, rule.length );
-                    rule = rule.substr(0, pos);
-                }else{
-                    rule = rule.substr( pos+1, rule.length );
-                }
+    var f = $(this).find(".form-group"),
+      ferror = false,
+      emailExp = /^[^\s()<>@,;:\/]+@\w[\w\.-]+\.[a-z]{2,}$/i;
 
-                switch( rule ){
-                    case 'required':
-                        if( i.val()==='' ){ ferror=ierror=true; }
-                        break;
+    f.children("input").each(function() {
+      // run all inputs
 
-                    case 'minlen':
-                        if( i.val().length<parseInt(exp) ){ ferror=ierror=true; }
-                        break;
+      var i = $(this); // current input
+      var rule = i.attr("data-rule");
 
-                    case 'email':
-                        if( !emailExp.test(i.val()) ){ ferror=ierror=true; }
-                        break;
-
-                    case 'checked':
-                        if( !i.attr('checked') ){ ferror=ierror=true; }
-                        break;
-
-                    case 'regexp':
-                        exp = new RegExp(exp);
-                        if( !exp.test(i.val()) ){ ferror=ierror=true; }
-                        break;
-                }
-                i.next('.validation').html( ( ierror ? (i.attr('data-msg') !== undefined ? i.attr('data-msg') : 'wrong Input') : '' ) ).show('blind');
-            }
-        });
-        f.children('textarea').each(function(){ // run all inputs
-
-            var i = $(this); // current input
-            var rule = i.attr('data-rule');
-
-            if( rule !== undefined ){
-                var ierror=false; // error flag for current input
-                var pos = rule.indexOf( ':', 0 );
-                if( pos >= 0 ){
-                    var exp = rule.substr( pos+1, rule.length );
-                    rule = rule.substr(0, pos);
-                }else{
-                    rule = rule.substr( pos+1, rule.length );
-                }
-
-                switch( rule ){
-                    case 'required':
-                        if( i.val()==='' ){ ferror=ierror=true; }
-                        break;
-
-                    case 'minlen':
-                        if( i.val().length<parseInt(exp) ){ ferror=ierror=true; }
-                        break;
-                }
-                i.next('.validation').html( ( ierror ? (i.attr('data-msg') != undefined ? i.attr('data-msg') : 'wrong Input') : '' ) ).show('blind');
-            }
-        });
-
-        if( ferror ) {
-            return false;
-        }
-        else {
-            event.preventDefault();
-            var str = $(this).serialize();
+      if (rule !== undefined) {
+        var ierror = false; // error flag for current input
+        var pos = rule.indexOf(":", 0);
+        if (pos >= 0) {
+          var exp = rule.substr(pos + 1, rule.length);
+          rule = rule.substr(0, pos);
+        } else {
+          rule = rule.substr(pos + 1, rule.length);
         }
 
-        $.ajax({
-            crossDomain: true,
-            type: "POST",
-            url: "https://script.google.com/macros/s/AKfycbzga2b14Osufp-ONdB70uEcgXcLAPZqEW5IgaqT6E0jUl8qSm0/exec",
-            data: str,
-            success: function(msg){
-
-                if(msg["result"] == "success") {
-                    $("#sendmessage").addClass("show");
-                    $("#errormessage").removeClass("show");
-                    $('.contactForm').find("input, textarea").val("");
-                    $('form#contact_form').slideUp(1000);
-                }
-                else {
-                    $("#sendmessage").removeClass("show");
-                    $("#errormessage").addClass("show");
-                    $('#errormessage').html("Menssagem não enviada, tente novamente!");
-                }
+        switch (rule) {
+          case "required":
+            if (i.val() === "") {
+              ferror = ierror = true;
             }
-        });
-        return false;
+            break;
+
+          case "minlen":
+            if (i.val().length < parseInt(exp)) {
+              ferror = ierror = true;
+            }
+            break;
+
+          case "email":
+            if (!emailExp.test(i.val())) {
+              ferror = ierror = true;
+            }
+            break;
+
+          case "checked":
+            if (!i.attr("checked")) {
+              ferror = ierror = true;
+            }
+            break;
+
+          case "regexp":
+            exp = new RegExp(exp);
+            if (!exp.test(i.val())) {
+              ferror = ierror = true;
+            }
+            break;
+        }
+        i.next(".validation")
+          .html(
+            ierror
+              ? i.attr("data-msg") !== undefined
+                ? i.attr("data-msg")
+                : "wrong Input"
+              : ""
+          )
+        
+        if (ierror) 
+          i.next(".validation").show("blind")
+      }
     });
 
+    f.children("textarea").each(function() {
+      // run all inputs
+
+      var i = $(this); // current input
+      var rule = i.attr("data-rule");
+
+      if (rule !== undefined) {
+        var ierror = false; // error flag for current input
+        var pos = rule.indexOf(":", 0);
+        if (pos >= 0) {
+          var exp = rule.substr(pos + 1, rule.length);
+          rule = rule.substr(0, pos);
+        } else {
+          rule = rule.substr(pos + 1, rule.length);
+        }
+
+        switch (rule) {
+          case "required":
+            if (i.val() === "") {
+              ferror = ierror = true;
+            }
+            break;
+
+          case "minlen":
+            if (i.val().length < parseInt(exp)) {
+              ferror = ierror = true;
+            }
+            break;
+        }
+
+        i.next(".validation")
+          .html(
+            ierror
+              ? i.attr("data-msg") != undefined
+                ? i.attr("data-msg")
+                : "wrong Input"
+              : ""
+          )
+        
+        if (ierror) 
+          i.next(".validation").show("blind")
+      }
+    });
+
+    if (ferror) {
+      return false;
+    } else {
+      var inputs = $(this).find("input, textarea, button");
+      var serializedDate = $(this).serialize();
+      inputs.prop("disabled", true);
+
+      request = $.ajax({
+        crossDomain: true,
+        type: "POST",
+        url: "https://online-email-sender.herokuapp.com/send/msaulo-resume",
+        data: serializedDate
+      });
+
+      request.done(function(data) {
+        $("#errormessage").hide();
+        $("#sendmessage").finish().slideDown(600).delay(4500).slideUp(600);
+        $(".contactForm")
+          .find("input, textarea")
+          .val("");
+        $("form#contact_form").slideUp(1000);
+      });
+
+      request.fail(function (jqXHR, textStatus, errorThrown) {
+        $("#sendmessage").hide();
+        $("#errormessage").finish().slideDown(600).delay(4500)
+      });
+
+      request.always(function () {
+        inputs.prop("disabled", false);
+      });
+
+      return false;
+    }
+  });
 });
